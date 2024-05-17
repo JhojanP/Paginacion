@@ -16,7 +16,7 @@ class Paginacion{
     totalNumeroPaginasBotones(){
        return Math.ceil(this.TotalCount / this.SizePage);
     }  
-    
+     
     templatePag(){ 
         return new Promise((resolve, reject)=>{
             try { 
