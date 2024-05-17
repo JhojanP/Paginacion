@@ -7,15 +7,30 @@
     <title>Document</title>
 </head>
 <body> 
+<div class="container">
 
-    <button id="btnbuscarcli">    Buscar  Clientes</button>
-    <div id="pagClientes">  </div>
-    <br><br><br>
-    <br><br><br> 
-    <br><br><br> 
-    <button id="btnbuscaremp">   Buscar  Empleados</button>
-    <div id="pagEmpleados">  </div>
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+        <h1 class="text-body-emphasis">Paginacion - Bootstrap</h1>
+        <p class="col-lg-8 mx-auto fs-5 text-muted"> Paginacion en js con fraework de Bootstrap para el Front End</p>
+        <div class="d-inline-flex gap-2 mb-5">
+          <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">Iniciar</button>
+          <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button">Configurar </button>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-md-12">
+            <button id="btnbuscarcli" class="btn btn-primary">    Buscar  Clientes</button>
+            <div id="pagClientes">  </div>
+        </div>
+        <div class="col-md-12">
+            <button id="btnbuscaremp" class="btn btn-primary">   Buscar  Empleados</button>
+            <div id="pagEmpleados">  </div> 
+        </div>
+      </div> 
+
+</div>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="app.js"></script>
       
