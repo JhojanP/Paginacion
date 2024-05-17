@@ -12,7 +12,7 @@ class Paginacion{
         this.SizePage = 10;  
        // this.render();    
     }
-   
+    
     totalNumeroPaginasBotones(){
        return Math.ceil(this.TotalCount / this.SizePage);
     }  
