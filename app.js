@@ -222,7 +222,7 @@ class ListaClientes extends Paginacion{
         this.TotalCount=this.getRandom(10,1000);
         this.render()
     } 
-}
+} 
  
 class ListaEmpleados extends Paginacion{
     constructor(){
