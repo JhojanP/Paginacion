@@ -12,7 +12,7 @@ class Paginacion{
         this.SizePage = 10;  
        // this.render();    
     }
-  
+   
     totalNumeroPaginasBotones(){
        return Math.ceil(this.TotalCount / this.SizePage);
     }  
@@ -228,7 +228,7 @@ class ListaEmpleados extends Paginacion{
     constructor(){
         super("Empleados"); 
         this.props=[];
-        this.config();  
+        this.config();    
     }
 
     config(){   
