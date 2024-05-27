@@ -9,7 +9,8 @@ class Paginacion{
         this.Obj=[];
 
         this.Page=1; 
-        this.SizePage = 10;  
+        this.SizePage = 10; 
+        this.NameEvents=""; 
        // this.render();    
     }
     
@@ -20,16 +21,17 @@ class Paginacion{
     templatePag(){ 
         return new Promise((resolve, reject)=>{
             try { 
-
+                this.Obj=[];
                 for (let index = 1; index <= this.TotalCount; index++) {
                     this.Obj.push(index)
-                }
-                console.log(this.obj)
+                } 
                 let btn = "";
-                for (let i = (this.Page - 1) * this.SizePage; i < (this.Page * this.SizePage); i++) {
-                    btn += `<li class="page-item item-${this.Id}" >
-                        <a href="#" class="page-link btnNums${this.Id}" id="i${this.Obj[i]}" data-value="${this.Obj[i]}" >${this.Obj[i]}</a>
-                    </li>`
+                for (let i = (this.Page - 1) * this.SizePage; i < (this.Page * this.SizePage); i++) { 
+                    if(this.Obj[i] !=undefined)  {
+                        btn += `<li class="page-item item-${this.Id}" >
+                            <a href="#" class="page-link btnNums${this.Id}" id="i${this.Obj[i]}" data-value="${this.Obj[i]}" >${this.Obj[i]}</a>
+                        </li>`
+                    } 
                 } 
 
                 let htmlPag=` 
@@ -65,20 +67,27 @@ class Paginacion{
         })
     }
 
-    render(){ 
-        this.templatePag().then((response)=>{
-            this.pagProps.ContentPag=document.getElementById(`pag${this.Id}`);
-            this.pagProps.ContentPag.innerHTML=response;  
-        }).catch((error)=>{
-            console.error(error)
-        }).finally(()=>{
-            this.configPag();   
-            this.actualizarValores()
-        })
+    render(){  
+      return new Promise((resolve,reject)=>{
+        try {
+            this.templatePag().then((response)=>{
+                this.pagProps.ContentPag=document.getElementById(`pag${this.Id}`);
+                this.pagProps.ContentPag.innerHTML=response;  
+            }).catch((error)=>{
+                console.error(error)
+            }).finally(()=>{
+                this.configPag();   
+                this.actualizarValores()
+                resolve();
+            })
+        } catch (error) {
+            reject();
+        }      
+      })        
     }
     
-    configPag(){
-        //props 
+    configPag(){  
+        this.NameEvents=`#listPaginacion${this.Id} .page-link` ;  
         this.pagProps.btnPrim=document.getElementById(`btnPrim${this.Id}`);
         this.pagProps.btnUlt=document.getElementById(`btnUlt${this.Id}`); 
         this.pagProps.btnAnt=document.getElementById(`btnAnt${this.Id}`);  
@@ -86,7 +95,10 @@ class Paginacion{
         this.pagProps.page=document.getElementById(`page${this.Id}`);
         this.pagProps.nroPage=document.getElementById(`nroPage${this.Id}`); 
         this.pagProps.btnNums=document.getElementsByClassName(`btnNums${this.Id}`); 
-         
+        this.pagProps.btnAllpag=document.querySelectorAll(this.NameEvents);   
+    }
+
+    Eventos(){
         //eventos  
         this.pagProps.btnAnt.addEventListener("click", (e)=> this.anterior(e)) 
         this.pagProps.btnSig.addEventListener("click", (e)=> this.siguiente(e)) 
@@ -94,8 +106,13 @@ class Paginacion{
         this.pagProps.btnUlt.addEventListener("click", (e)=> this.ultimo(e)) 
         Array.from(this.pagProps.btnNums).map(e=>{
             return e.addEventListener("click", (e)=>  this.active(e))
+        }) 
+    }
+
+    ObjEvents(){  
+        Array.from(this.pagProps.btnAllpag).map(e=>{
+            return e.addEventListener("click", (e)=>  this.active(e))
         })
-        
     }
 
     limpiarActive(){
@@ -143,7 +160,7 @@ class Paginacion{
     }
  
     anterior(e){ 
-        e.stopImmediatePropagation();
+        //e.stopImmediatePropagation();
         if(this.PageIndex<=1)  
             this.PageIndex=1;
         else    
@@ -160,12 +177,12 @@ class Paginacion{
     }
 
     siguiente(e){
-        e.stopImmediatePropagation();
+       // e.stopImmediatePropagation();
         if(this.PageIndex>=this.TotalCount)
             this.PageIndex= this.TotalCount;
         else    
             this.PageIndex++; 
- 
+
         let btn=document.querySelector(`#listPaginacion${this.Id} #i${this.PageIndex}`) 
         if (btn==null){
             this.Page++;
@@ -178,7 +195,7 @@ class Paginacion{
     }
 
     primero(e){
-        e.stopImmediatePropagation();
+       // e.stopImmediatePropagation();
         this.PageIndex=1; 
         let btn=document.querySelector(`#listPaginacion${this.Id} #i${this.PageIndex}`) 
         if (btn==null){
@@ -192,10 +209,8 @@ class Paginacion{
     }
 
     ultimo(e){ 
-        e.stopImmediatePropagation();
+        //e.stopImmediatePropagation();
         this.PageIndex= this.TotalCount; 
-
-
         let btn=document.querySelector(`#listPaginacion${this.Id} #i${this.PageIndex}`) 
         if (btn==null){
             this.Page=this.totalNumeroPaginasBotones();
@@ -219,9 +234,14 @@ class ListaClientes extends Paginacion{
     }
      
     Listas(){ 
-        this.TotalCount=this.getRandom(10,1000);
-        this.render()
+        this.TotalCount=25//this.getRandom(10,1000);
+        this.render() 
     } 
+
+    Load(){ 
+        console.log("consulta")
+        console.log(this.PageIndex)
+    }
 } 
  
 class ListaEmpleados extends Paginacion{
@@ -237,19 +257,31 @@ class ListaEmpleados extends Paginacion{
      
     Listas(){
         this.TotalCount= this.getRandom(10,1000);
-        this.render()
+        this.render();
     } 
+
+
+
+   
 }
 
+
+ 
+let objClie=new ListaClientes();
+let objEmpl=new ListaEmpleados();
+
 window.addEventListener("load",function(e){
-    let objClie=new ListaClientes();
-     objClie.Listas();
-
-    let objEmpl=new ListaEmpleados();
-     objEmpl.Listas();
-
+ 
+    objClie.Listas();  
+    objEmpl.Listas();
+ 
+    
     objClie.props.btnbuscarcli.addEventListener("click",()=>objClie.Listas());
     objEmpl.props.btnbuscaremp.addEventListener("click",()=>objEmpl.Listas());
 })
 
- 
+window.addEventListener("DOMContentLoaded", function () {
+
+    
+
+})
